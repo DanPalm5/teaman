@@ -400,7 +400,7 @@ void create_scene_graph()
 	torso.sibling = NULL;
 	torso.child = &head;
 	torso.shaderProg = textureShaderProg;
-	//torso.f = draw_torso();
+	torso.f = draw_torso;
 
 }
 
