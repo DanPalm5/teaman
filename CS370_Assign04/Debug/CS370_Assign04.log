@@ -1,10 +1,10 @@
 ﻿  TeaMan.cpp
-E:\Admin\Documents\GitHub\teaman\teaman\CS370_Assign04\shaderutils.h(20,1): warning C4996:  'open': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _open. See online help for details.
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(20,1): warning C4996:  'open': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _open. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(516): message :  see declaration of 'open'
-E:\Admin\Documents\GitHub\teaman\teaman\CS370_Assign04\shaderutils.h(23,1): warning C4996:  'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(23,1): warning C4996:  'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(503): message :  see declaration of 'lseek'
-E:\Admin\Documents\GitHub\teaman\teaman\CS370_Assign04\shaderutils.h(24,1): warning C4996:  'close': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _close. See online help for details.
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(24,1): warning C4996:  'close': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _close. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(459): message :  see declaration of 'close'
-E:\Admin\Documents\GitHub\teaman\teaman\CS370_Assign04\shaderutils.h(43,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(43,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message :  see declaration of 'fopen'
-  CS370_Assign04.vcxproj -> E:\Admin\Documents\GitHub\teaman\teaman\Debug\CS370_Assign04.exe
+  CS370_Assign04.vcxproj -> E:\CS370\assignments\CS370_Assign04\Debug\CS370_Assign04.exe

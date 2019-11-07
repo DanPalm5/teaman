@@ -1,7 +1,7 @@
 // CS370 - Fall 2018
 // Assign04 - Textured Tea Man
 //Daniel Palmieri 12:30-1:45 T/TR
-//Dr. Babcock
+//Dr. Babcock - 
 
 #ifdef OSX
 	#include <GLUT/glut.h>
@@ -397,10 +397,21 @@ bool load_textures()
 void create_scene_graph()
 {
 	// creating torso 
+	torso.material = brass;
 	torso.sibling = NULL;
 	torso.child = &head;
 	torso.shaderProg = textureShaderProg;
 	torso.f = draw_torso;
+	update_torso();
+
+
+	// creating head
+	head.child = NULL;
+	head.material = brass;
+	head.sibling = NULL;
+	head.shaderProg = lightShaderProg;
+	head.f = draw_head;
+	update_head();
 
 }
 
@@ -438,22 +449,42 @@ void texquad(GLfloat v1[], GLfloat v2[], GLfloat v3[], GLfloat v4[], GLfloat t1[
 	glEnd();
 }
 
+// function to draw torso
 void draw_torso() 
 {
-
+	glPushMatrix();
+	glColor3f(1.0, 0.0, 0.0);
+	glTranslatef(0.0f, 0.0f, 0.0f);
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	glScalef(1.0f, 1.0f, 1.0f);
+	glScalef(TORSO_WIDTH, TORSO_HEIGHT, TORSO_DEPTH);
+	texturecube();
+	glPopMatrix();
 }
 
+// function to draw head
 void draw_head()
 {
-
+	glPushMatrix();
+	// Set uniform shader variable and material
+	glUniform1i(numLights_param, numLights);
+	set_material(GL_FRONT_AND_BACK, &head.material);
+	glScalef(HEAD_XSCALE, HEAD_YSCALE, HEAD_ZSCALE);
+	glutSolidSphere(HEAD_RADIUS, 50, 50);
+	glPopMatrix();
 }
 
-
+// function to update torso movements
 void update_torso()
 {
 
+
 }
+
+// function to update head movements
 void update_head()
 {
+
+
 
 }
