@@ -1,7 +1,7 @@
 // CS370 - Fall 2018
 // Assign04 - Textured Tea Man
 //Daniel Palmieri 12:30-1:45 T/TR
-//Dr. Babcock - 
+//Dr. Babcock - For MS1, the only nodes currently created are the head and body, which is why the head sibling is set to null.
 
 #ifdef OSX
 	#include <GLUT/glut.h>
@@ -397,6 +397,8 @@ bool load_textures()
 void create_scene_graph()
 {
 	// creating torso 
+	
+	torso.texture = SHIRT;
 	torso.material = brass;
 	torso.sibling = NULL;
 	torso.child = &head;
@@ -404,11 +406,11 @@ void create_scene_graph()
 	torso.f = draw_torso;
 	update_torso();
 
-
 	// creating head
+	head.texture = NO_TEXTURES;
 	head.child = NULL;
 	head.material = brass;
-	head.sibling = NULL;
+	head.sibling = NULL; // for milestone 1 I did not add any other nodes (but I know that this will not be null eventually)
 	head.shaderProg = lightShaderProg;
 	head.f = draw_head;
 	update_head();
@@ -453,10 +455,8 @@ void texquad(GLfloat v1[], GLfloat v2[], GLfloat v3[], GLfloat v4[], GLfloat t1[
 void draw_torso() 
 {
 	glPushMatrix();
-	glColor3f(1.0, 0.0, 0.0);
-	glTranslatef(0.0f, 0.0f, 0.0f);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glScalef(1.0f, 1.0f, 1.0f);
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(0, TORSO_YDIST, 0);
 	glScalef(TORSO_WIDTH, TORSO_HEIGHT, TORSO_DEPTH);
 	texturecube();
 	glPopMatrix();
@@ -469,6 +469,7 @@ void draw_head()
 	// Set uniform shader variable and material
 	glUniform1i(numLights_param, numLights);
 	set_material(GL_FRONT_AND_BACK, &head.material);
+	glTranslatef(0, HEAD_YDIST+TORSO_YDIST, 0);
 	glScalef(HEAD_XSCALE, HEAD_YSCALE, HEAD_ZSCALE);
 	glutSolidSphere(HEAD_RADIUS, 50, 50);
 	glPopMatrix();
@@ -477,7 +478,7 @@ void draw_head()
 // function to update torso movements
 void update_torso()
 {
-
+	glGetFloatv(GL_MODELVIEW_MATRIX, torso.m);
 
 }
 
@@ -485,6 +486,6 @@ void update_torso()
 void update_head()
 {
 
-
+	glGetFloatv(GL_MODELVIEW_MATRIX, head.m);
 
 }

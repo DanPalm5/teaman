@@ -1,11 +1,14 @@
 #define TORSO_WIDTH 2.0
 #define TORSO_HEIGHT 8.0
 #define TORSO_DEPTH 4.0
+#define TORSO_YDIST 5
 
 #define HEAD_RADIUS 2.0
 #define HEAD_XSCALE 0.5
 #define HEAD_YSCALE 1.0
 #define HEAD_ZSCALE 0.5
+#define HEAD_YDIST 10
+
 
 #define EAR_RADIUS 0.5
 #define EAR_HEIGHT 0.75
