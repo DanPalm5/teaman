@@ -84,10 +84,10 @@ GLfloat cube_tex[][2] = {{0.0f,0.0f}};
 // Robot nodes
 treenode torso;
 treenode head;
-treenode left_arm;
-treenode right_arm;
-treenode left_leg;
-treenode right_leg;
+treenode lower_arm;
+treenode upper_arm;
+treenode lower_leg;
+treenode upper_leg;
 
 // Rotation angles
 
@@ -117,8 +117,16 @@ void texturecube();
 void texquad(GLfloat v1[], GLfloat v2[], GLfloat v3[], GLfloat v4[], GLfloat t1[], GLfloat t2[], GLfloat t3[], GLfloat t4[]);
 void draw_torso();
 void draw_head();
+void draw_lower_arm();
+void draw_upper_arm();
+void draw_lower_leg();
+void draw_upper_leg();
 void update_torso();
 void update_head();
+void update_lower_arm();
+void update_upper_arm();
+void update_lower_leg();
+void update_upper_leg();
 
 int main(int argc, char* argv[])
 {
@@ -381,8 +389,12 @@ bool load_textures()
 		if (tex_ids[i] != 0)
 		{
 			// TODO: Set scaling filters
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
 
 			// TODO: Set wrapping modes
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		}
 		// Otherwise texture failed to load
 		else
@@ -396,8 +408,7 @@ bool load_textures()
 // Routine to create model tree
 void create_scene_graph()
 {
-	// creating torso 
-	
+	// creating torso node
 	torso.texture = SHIRT;
 	torso.material = brass;
 	torso.sibling = NULL;
@@ -406,14 +417,49 @@ void create_scene_graph()
 	torso.f = draw_torso;
 	update_torso();
 
-	// creating head
+	// creating head node
 	head.texture = NO_TEXTURES;
 	head.child = NULL;
 	head.material = brass;
-	head.sibling = NULL; // for milestone 1 I did not add any other nodes (but I know that this will not be null eventually)
+	head.sibling = &lower_arm;
 	head.shaderProg = lightShaderProg;
 	head.f = draw_head;
 	update_head();
+
+
+	// creating arm nodes
+		// left arm
+		lower_arm.texture = NO_TEXTURES;
+		lower_arm.material = brass;
+		lower_arm.sibling = &upper_arm;
+		lower_arm.shaderProg = lightShaderProg;
+		lower_arm.f = draw_lower_arm;
+		update_lower_arm();
+
+		// right arm
+		upper_arm.texture = NO_TEXTURES;
+		upper_arm.material = brass;
+		upper_arm.sibling = &lower_leg;
+		upper_arm.shaderProg = lightShaderProg;
+		upper_arm.f = draw_upper_arm;
+		update_upper_arm();
+
+	// creating leg nodes
+		// left leg
+		lower_leg.texture = NO_TEXTURES;
+		lower_leg.material = brass;
+		lower_leg.sibling = &upper_leg;
+		lower_leg.shaderProg = lightShaderProg;
+		lower_leg.f = draw_lower_leg;
+		update_lower_leg();
+
+		//right leg
+		upper_leg.texture = NO_TEXTURES;
+		upper_leg.material = brass;
+		upper_leg.sibling = NULL;
+		upper_leg.shaderProg = lightShaderProg;
+		upper_leg.f = draw_upper_leg;
+		update_upper_leg();
 
 }
 
@@ -474,18 +520,124 @@ void draw_head()
 	glutSolidSphere(HEAD_RADIUS, 50, 50);
 	glPopMatrix();
 }
+// function to draw lower arm (includes joint)
+void draw_lower_arm()
+{
+	glUniform1i(numLights_param, numLights);
+
+	//  left lower arm
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &lower_arm.material);
+	glTranslatef(-TORSO_WIDTH*2.5, TORSO_HEIGHT+(LOWER_ARM_HEIGHT/2.5), 0);
+	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
+	glutSolidCube(1.0);
+	glPopMatrix();
+	// left elbow joint
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &lime);
+	glTranslatef(-TORSO_WIDTH * 2.5, TORSO_HEIGHT+LOWER_ARM_HEIGHT, 0);
+	glScalef(ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE);
+	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
+	glPopMatrix();
+
+	// right lower arm
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &lower_arm.material);
+	glTranslatef(TORSO_WIDTH * 2.5, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5), 0);
+	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
+	glutSolidCube(1.0);
+	glPopMatrix();
+
+	//right elbow joint
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &lime);
+	glTranslatef(TORSO_WIDTH * 2.5, TORSO_HEIGHT + LOWER_ARM_HEIGHT, 0);
+	glScalef(ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE);
+	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
+	glPopMatrix();
+}
+
+// function to draw upper arm (includes shoulder joint)
+void draw_upper_arm()
+{
+	glUniform1i(numLights_param, numLights);
+
+	// drawing left upper arn (includes shoulder joint)
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &blue);
+	glTranslatef(-TORSO_WIDTH * 2.5, TORSO_YDIST + UPPER_ARM_HEIGHT, 0);
+	glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
+	glutSolidCube(1.0);
+	glPopMatrix();
+
+	// left upper arm shoulder joint
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &red_plastic);
+	glTranslatef(-TORSO_WIDTH * 2.5, TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1, 0);
+	glScalef(SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE);
+	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
+	glPopMatrix();
+	
+
+
+	// drawing rightupper arn (includes shoulder joint)
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &blue);
+	glTranslatef(TORSO_WIDTH * 2.5, TORSO_YDIST + UPPER_ARM_HEIGHT , 0);
+	glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
+	glutSolidCube(1.0);
+	glPopMatrix();
+
+
+	// right upper arm shoulder joint
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &red_plastic);
+	glTranslatef(TORSO_WIDTH * 2.5, TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT-1, 0);
+	glScalef(SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE);
+	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
+	glPopMatrix();
+}
+
+// function to draw lower leg
+void draw_lower_leg()
+{
+
+}
+
+// function to draw upper leg
+void draw_upper_leg()
+{
+
+
+}
+
 
 // function to update torso movements
 void update_torso()
 {
 	glGetFloatv(GL_MODELVIEW_MATRIX, torso.m);
-
 }
 
 // function to update head movements
 void update_head()
 {
-
 	glGetFloatv(GL_MODELVIEW_MATRIX, head.m);
+}
 
+
+void update_lower_arm()
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, lower_arm.m);
+}
+void update_upper_arm() 
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, upper_arm.m);
+}
+void update_lower_leg() 
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, lower_leg.m);
+}
+void update_upper_leg() 
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, upper_leg.m);
 }
