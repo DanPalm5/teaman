@@ -78,8 +78,25 @@ GLfloat cube[][3] = { { -1.0f, -1.0f, -1.0f }, { 1.0f, -1.0f, -1.0f }, { 1.0f, -
 { -1.0f, -1.0f, 1.0f }, { -1.0f, 1.0f, -1.0f }, { 1.0f, 1.0f, -1.0f },
 { 1.0f, 1.0f, 1.0f }, { -1.0f, 1.0f, 1.0f } };
 
+//should be top bottom left right front back
+
 // Cube texture coords
-GLfloat cube_tex[][2] = {{0.0f,0.0f}};
+/*
+408/582 = 0.701030928
+41/313 = 0.130990415
+204/582 = 0.350515464
+495/582 = 0.850515464
+*/
+GLfloat cube_tex[][2] = { {0.701030928, 0.130990415},{0.701030928, 0}, {1,0}, {1,0.130990415}, //top
+						{0.701030928, 0}, {1,0}, {1, 0.130990415}, {0.701030928, 0.130990415}, //bottom
+						{ 1, 0.130990415 }, { 1,1 }, {0.850515464 ,1}, {0.850515464, 0.130990415},	//left
+						{0.850515464, 0.130990415}, {0.850515464, 1}, {0.701030928, 1}, {0.701030928, 0.130990415},//right
+						{.350515464,0},{.350515464,1 }, { 0,1 }, { 0, 0 }, //front
+						{0.350515464,0}, {0.701030928, 0}, {0.701030928, 1}, {0.350515464, 1} };//back
+						
+			
+							
+
 
 // Robot nodes
 treenode torso;
@@ -92,7 +109,6 @@ treenode box;
 
 // Rotation angles
 GLfloat teapot_theta = 0.0f;
-
 
 // Animation variables
 GLint time = 0;
@@ -541,7 +557,8 @@ void texturecube()
 	texquad(cube[1], cube[5], cube[6], cube[2], cube_tex[16], cube_tex[17], cube_tex[18], cube_tex[19]);
 
 	// Back face
-	texquad(cube[0], cube[3], cube[7], cube[4], cube_tex[20], cube_tex[21], cube_tex[22], cube_tex[23]);
+	texquad(cube[0], cube[3], cube[7], cube[4], cube_tex[20], cube_tex[21], cube_tex[22], cube_tex[23]); 
+
 }
 
 // Routine to draw quadrilateral face
@@ -549,18 +566,25 @@ void texquad(GLfloat v1[], GLfloat v2[], GLfloat v3[], GLfloat v4[], GLfloat t1[
 {
 	// Draw face 
 	glBegin(GL_POLYGON);
-		glVertex3fv(v1);
-		glVertex3fv(v2);
-		glVertex3fv(v3);
-		glVertex3fv(v4);
+		glTexCoord2fv(t1);
+			glVertex3fv(v1);
+		glTexCoord2fv(t2);
+			glVertex3fv(v2);
+		glTexCoord2fv(t3);
+			glVertex3fv(v3);
+		glTexCoord2fv(t4);
+			glVertex3fv(v4);
 	glEnd();
 }
 
 // function to draw torso
 void draw_torso() 
 {
-	glDisable(GL_BLEND);
+	glUniform1i(texSampler, 0);
 	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D, tex_ids[SHIRT]);
+	
+	glDisable(GL_BLEND);
 	glTranslatef(0, TORSO_YDIST, 0);
 	glScalef(TORSO_WIDTH, TORSO_HEIGHT, TORSO_DEPTH);
 	texturecube();
