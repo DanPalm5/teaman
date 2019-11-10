@@ -38,6 +38,8 @@ GLint texSampler;
 
 // Initial light position
 GLfloat light_pos[4] = { 0.0, 30.0, 10.0, 1.0 };
+
+
 // Global light variables
 GLint numLights = 1;
 
@@ -97,18 +99,22 @@ GLfloat cube_tex[][2] = { {0.701030928, 0.130990415},{0.701030928, 0}, {1,0}, {1
 // Robot nodes
 treenode head;
 treenode torso;
+
 treenode left_shoulder;
 treenode right_shoulder;
+
 treenode upper_left_arm;
 treenode upper_right_arm;
 treenode lower_left_arm;
 treenode lower_right_arm;
+
 treenode upper_left_leg;
 treenode upper_right_leg;
 treenode lower_left_leg;
 treenode lower_right_leg;
 
 treenode box;
+treenode teapot;
 
 // Rotation angles
 GLfloat teapot_theta = 0.0f;
@@ -171,6 +177,7 @@ void draw_upper_arm();
 void draw_lower_leg();
 void draw_upper_leg();
 void draw_box();
+void draw_teapot();
 void update_torso();
 void update_head();
 void update_left_shoulder();
@@ -184,6 +191,8 @@ void update_lower_right_leg();
 void update_upper_left_leg();
 void update_upper_right_leg();
 void update_box();
+void update_teapot();
+
 int main(int argc, char* argv[])
 {
 	// Initialize glut
@@ -222,7 +231,6 @@ int main(int argc, char* argv[])
 	// Set initial ambient light
 	GLfloat background[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 	set_AmbientLight(background);
-
 
 	// Create quadric
 	quadric = gluNewQuadric();
@@ -342,7 +350,7 @@ void idlefunc()
 			{
 				teapot_theta -= 360.0f;
 			}
-			update_box();
+			update_teapot();
 		}
 
 		if (animate) {
@@ -351,11 +359,11 @@ void idlefunc()
 			right_shoulder_theta+= 5.0f * shoulder_dir * sps* (time - lasttime) / 1000.0f;
 			left_shoulder_theta -= 5.0f * shoulder_dir *  sps * (time - lasttime) / 1000.0f;
 				// leg movements
-			upper_right_leg_theta += 2.5f * leg_dir * sps * (time - lasttime) / 1000.0f;
-			upper_left_leg_theta -= 2.5f * leg_dir *sps* (time - lasttime) / 1000.0f;
+			upper_right_leg_theta -= 2.5f * leg_dir * sps * (time - lasttime) / 1000.0f;
+			upper_left_leg_theta += 2.5f * leg_dir *sps* (time - lasttime) / 1000.0f;
 
-			lower_right_leg_theta -= 1.0f * knee_dir * sps * (time - lasttime) / 1000.0f;
-			lower_left_leg_theta += 1.0 * knee_dir * sps * (time - lasttime) / 1000.0f;
+			lower_right_leg_theta += 1.0f * knee_dir * sps * (time - lasttime) / 1000.0f;
+			lower_left_leg_theta -= 1.0 * knee_dir * sps * (time - lasttime) / 1000.0f;
 
 
 				// arm movements
@@ -363,24 +371,24 @@ void idlefunc()
 			lower_left_arm_theta -= 1.0f * elbow_dir * sps * (time - lasttime) / 1000.0f;
 
 
-			if (right_shoulder_theta > 60.0f)
+			if (right_shoulder_theta > ANG_RANGE)
 			{
 				shoulder_dir *= -1;
 				elbow_dir *= -1;
 				knee_dir *= -1;
 			}
-			if (right_shoulder_theta < -60.0f) 
+			if (right_shoulder_theta < -ANG_RANGE) 
 			{
 				shoulder_dir *= -1;
 				elbow_dir *= -1;
 				knee_dir *= -1;
 			}
 
-			if (right_shoulder_theta / 2 > 30.0f)
+			if (right_shoulder_theta / 2 > ANG_RANGE/2)
 			{
 				leg_dir *= -1;
 			}
-			if (right_shoulder_theta / 2< -30.0f)
+			if (right_shoulder_theta / 2 < -ANG_RANGE/2)
 			{
 				leg_dir *= -1;
 			}
@@ -665,13 +673,20 @@ void create_scene_graph()
 
 		// creating box node
 		box.texture = NO_TEXTURES;
-		box.child = NULL;
+		box.child = &teapot;
 		box.material = transparent_lime;
 		box.sibling = NULL;
 		box.shaderProg = lightShaderProg;
 		box.f = draw_box;
 		update_box();
 	
+		//teapot
+		teapot.texture = NO_TEXTURES;
+		teapot.child = teapot.sibling = NULL;
+		teapot.material = gray;
+		teapot.shaderProg = lightShaderProg;
+		teapot.f = draw_teapot;
+		update_teapot();
 }
 
 // Routine to draw textured cube
@@ -741,13 +756,13 @@ void draw_head()
 
 	// ears
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &blue);
+	set_material(GL_FRONT_AND_BACK, &gray);
 	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, -HEAD_ZSCALE * 2.5);
 	gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
 	glPopMatrix();
 
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &blue);
+	set_material(GL_FRONT_AND_BACK, &gray);
 	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, HEAD_ZSCALE * 1.25);
 	gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
 	glPopMatrix();
@@ -823,15 +838,6 @@ void draw_upper_leg()
 // function to draw box
 void draw_box() 
 {
-	// teapot inside box
-	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &blue);
-	glTranslatef(TEAPOT_X, TEAPOT_Y, 0.0f);
-	glRotatef(teapot_theta, 0.0f, 1.0f, 0.0f);
-	glTranslatef(0, 0, 0);
-	glutSolidTeapot(TEAPOT_SIZE);
-	glPopMatrix();
-
 	// enable alpha blending for box
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -848,6 +854,15 @@ void draw_box()
 
 	// disable blending - we only want the box to be translucent
 	glDisable(GL_BLEND);
+}
+
+void draw_teapot() 
+{
+	// teapot inside box
+	glPushMatrix();
+	set_material(GL_FRONT_AND_BACK, &teapot.material);
+	glutSolidTeapot(TEAPOT_SIZE);
+	glPopMatrix();
 }
 
 
@@ -986,4 +1001,16 @@ void update_box()
 		glLoadIdentity();
 		glGetFloatv(GL_MODELVIEW_MATRIX, box.m);
 	glPopMatrix();
+}
+
+
+void update_teapot()
+{
+	glPushMatrix();
+		glLoadIdentity();
+		glTranslatef(TEAPOT_X, TEAPOT_Y, 0.0f);
+		glRotatef(teapot_theta, 0.0f, 1.0f, 0.0f);
+		glGetFloatv(GL_MODELVIEW_MATRIX, teapot.m);
+	glPopMatrix();
+
 }

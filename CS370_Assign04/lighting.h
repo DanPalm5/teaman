@@ -10,6 +10,10 @@ LightType white_light = {{0.0f,0.0f,0.0f,1.0f},
                          {1.0f,1.0f,1.0f,1.0f},
                          {1.0f,1.0f,1.0f,1.0f}};
 
+LightType blue_light = { {0.2,0.2 ,0.9, 1.0},
+						{ 0.2,0.2,0.9,1.0 },
+						{ 0.6,0.6,0.9, 1.0} };
+
 // Ambient light
 GLfloat background[] = { 0.2f, 0.2f, 0.2f, 1.0f };
 					   

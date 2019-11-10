@@ -17,8 +17,8 @@ MaterialType red_plastic = {{0.3f,0.0f,0.0f,1.0f},
 						32.0f};
 						
 MaterialType blue = {{0.1, 0.1, 0.3, 1.0},
-					{0.7, 0.7, 0.7, 1.0},
-					{0.50,0.50, 0.50, 1.0},
+					{0.0, 0.0, 0.7, 1.0},
+					{0.5,0.50, 0.90, 1.0},
 					 32.0f };
 
 
@@ -31,6 +31,11 @@ MaterialType transparent_lime = { { 0.02f, 0.174f, 0.021f, 0.5f },
 								{ 0.075f, 0.6142f, 0.07568f, 0.5f },
 								{ 0.633f, 0.7278f, 0.633f, 0.5f },
 								32.0f };
+
+MaterialType gray = {{ 0.50, 0.50, 0.50, 1.0 },
+					{ 0.50, 0.50, 0.50, 1.0 }, 
+					{ 0.50, 0.50, 0.50, 1.0 }, 
+					32.0f};
 
 void set_material(GLenum face, MaterialType *material)
 {
