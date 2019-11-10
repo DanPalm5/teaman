@@ -349,31 +349,49 @@ void idlefunc()
 				// compute shoulder movements
 			right_shoulder_theta+= 5.0f * shoulder_dir * rpm * (time - lasttime) / 1000.0f;
 			left_shoulder_theta -= 5.0f * shoulder_dir *  rpm * (time - lasttime) / 1000.0f;
+				// leg movements
 			upper_right_leg_theta += 2.5f * leg_dir * rpm * (time - lasttime) / 1000.0f;
 			upper_left_leg_theta -= 2.5f * leg_dir *rpm* (time - lasttime) / 1000.0f;
+
+			lower_right_leg_theta -= 1.0f * knee_dir * rpm * (time - lasttime) / 1000.0f;
+			lower_left_leg_theta += 1.0 * knee_dir * rpm * (time - lasttime) / 1000.0f;
+
+
+				// arm movements
+			lower_right_arm_theta += 1.0f * elbow_dir * rpm * (time - lasttime) / 1000.0f;
+			lower_left_arm_theta -= 1.0f * elbow_dir * rpm * (time - lasttime) / 1000.0f;
+
 
 			if (right_shoulder_theta > 60.0f)
 			{
 				shoulder_dir *= -1;
+				elbow_dir *= -1;
+				knee_dir *= -1;
 			}
 			if (right_shoulder_theta < -60.0f) 
 			{
 				shoulder_dir *= -1;
+				elbow_dir *= -1;
+				knee_dir *= -1;
 			}
 
-			if (upper_right_leg_theta > 30.0f)
+			if (right_shoulder_theta / 2 > 30.0f)
 			{
 				leg_dir *= -1;
 			}
-			if (upper_left_leg_theta < -30.0f)
+			if (right_shoulder_theta / 2< -30.0f)
 			{
 				leg_dir *= -1;
 			}
 
 			update_right_shoulder();
 			update_left_shoulder();
-			update_upper_left_leg();
 			update_upper_right_leg();
+			update_upper_left_leg();
+			update_lower_right_arm();
+			update_lower_left_arm();
+			update_lower_right_leg();
+			update_lower_left_leg();
 
 		}
 		// Update lasttime (reset timer)
@@ -753,7 +771,7 @@ void draw_lower_arm()
 	// lower arm
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &lower_left_arm.material);
-	glTranslatef(0, TORSO_HEIGHT+(LOWER_ARM_HEIGHT/2.5), 0);
+	glTranslatef(0, 0, 0);
 	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
 	glutSolidCube(1.0);
 	glPopMatrix();
@@ -761,7 +779,7 @@ void draw_lower_arm()
 	// elbow joint
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &lime);
-	glTranslatef(0, TORSO_HEIGHT+LOWER_ARM_HEIGHT, 0);
+	glTranslatef(0, TORSO_HEIGHT/3, 0);
 	glScalef(ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE);
 	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
 	glPopMatrix();
@@ -784,7 +802,7 @@ void draw_lower_leg()
 {
 	glPushMatrix();
 		set_material(GL_FRONT_AND_BACK, &lower_left_leg.material);
-		glTranslatef(0, (-TORSO_HEIGHT / 2) + 0.35, 0);
+		glTranslatef(0, 0, 0);
 		glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
 		glutSolidCube(1.0);
 	glPopMatrix();
@@ -795,7 +813,7 @@ void draw_upper_leg()
 {
 	glPushMatrix();
 		set_material(GL_FRONT_AND_BACK, &upper_left_leg.material);
-		glTranslatef(0, 0.75, 0.0);
+		glTranslatef(0, 0, 0.0);
 		glScalef(UPPER_LEG_WIDTH, UPPER_LEG_HEIGHT, UPPER_LEG_DEPTH);
 		glutSolidCube(1.0);
 	glPopMatrix();
@@ -902,7 +920,7 @@ void update_lower_left_arm()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0, 0);
+		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5), 0);
 		glRotatef(lower_left_arm_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_arm.m);
 	glPopMatrix();
@@ -912,7 +930,7 @@ void update_lower_right_arm()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0, 0);
+		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5), 0);
 		glRotatef(lower_right_arm_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_arm.m);
 	glPopMatrix();
@@ -923,20 +941,20 @@ void update_lower_right_arm()
 void update_upper_left_leg()
 {
 	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0, 0, -TORSO_WIDTH);
-	glRotatef(upper_left_leg_theta, 0, 0, 1);
-	glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_leg.m);
+		glLoadIdentity();
+		glTranslatef(0, 0.75, -TORSO_WIDTH);
+		glRotatef(upper_left_leg_theta, 0, 0, 1);
+		glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_leg.m);
 	glPopMatrix();
 }
 
 void update_upper_right_leg()
 {
 	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0, 0, TORSO_WIDTH);
-	glRotatef(upper_right_leg_theta, 0, 0, 1);
-	glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_leg.m);
+		glLoadIdentity();
+		glTranslatef(0, 0.75, TORSO_WIDTH);
+		glRotatef(upper_right_leg_theta, 0, 0, 1);
+		glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_leg.m);
 	glPopMatrix();
 }
 
@@ -944,7 +962,7 @@ void update_lower_left_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0,0);
+		glTranslatef(0, (-TORSO_HEIGHT / 1.5) + 0.35, 0);
 		glRotatef(lower_left_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_leg.m);
 	glPopMatrix();
@@ -954,7 +972,7 @@ void update_lower_right_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0,0);
+		glTranslatef(0, (-TORSO_HEIGHT / 1.5) + 0.35,0);
 		glRotatef(lower_right_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_leg.m);
 	glPopMatrix();
