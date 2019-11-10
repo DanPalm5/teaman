@@ -10,9 +10,8 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(45
 E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(43,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
 E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(94,77): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(680,56): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(727,75): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(771,47): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(799,25): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(827,20): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(744,75): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(756,56): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(787,48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(825,20): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   CS370_Assign04.vcxproj -> E:\CS370\assignments\CS370_Assign04\Debug\CS370_Assign04.exe
