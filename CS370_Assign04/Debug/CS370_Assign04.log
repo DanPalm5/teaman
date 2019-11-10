@@ -1,22 +1,22 @@
 ﻿  TeaMan.cpp
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\materials.h(22,13): warning C4305:  'initializing': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\materials.h(28,14): warning C4305:  'initializing': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(20,1): warning C4996:  'open': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _open. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(516): message :  see declaration of 'open'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(23,1): warning C4996:  'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(503): message :  see declaration of 'lseek'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(24,1): warning C4996:  'close': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _close. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(459): message :  see declaration of 'close'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(43,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message :  see declaration of 'fopen'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(95,77): warning C4305:  'initializing': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(626,71): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(641,76): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(672,75): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(690,75): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(701,54): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(709,53): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(721,36): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(729,35): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(757,20): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\materials.h(22,13): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\materials.h(28,14): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(20,1): warning C4996: 'open': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _open. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(516): message : see declaration of 'open'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(23,1): warning C4996: 'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(503): message : see declaration of 'lseek'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(24,1): warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _close. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(459): message : see declaration of 'close'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(43,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(94,77): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(671,71): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(686,76): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(717,75): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(735,75): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(746,54): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(754,53): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(766,36): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(774,35): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(802,20): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   CS370_Assign04.vcxproj -> E:\CS370\assignments\CS370_Assign04\Debug\CS370_Assign04.exe

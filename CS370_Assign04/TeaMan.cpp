@@ -1,7 +1,7 @@
 // CS370 - Fall 2018
 // Assign04 - Textured Tea Man
 //Daniel Palmieri 12:30-1:45 T/TR
-//Dr. Babcock - To toggle teapot spinning, use T.
+//Dr. Babcock - To toggle teapot spinning, use T. To toggle animation of robot, use <spacebar>.
 
 #ifdef OSX
 	#include <GLUT/glut.h>
@@ -78,7 +78,6 @@ GLfloat cube[][3] = { { -1.0f, -1.0f, -1.0f }, { 1.0f, -1.0f, -1.0f }, { 1.0f, -
 { -1.0f, -1.0f, 1.0f }, { -1.0f, 1.0f, -1.0f }, { 1.0f, 1.0f, -1.0f },
 { 1.0f, 1.0f, 1.0f }, { -1.0f, 1.0f, 1.0f } };
 
-//should be top bottom left right front back
 
 // Cube texture coords
 /*
@@ -89,26 +88,36 @@ GLfloat cube[][3] = { { -1.0f, -1.0f, -1.0f }, { 1.0f, -1.0f, -1.0f }, { 1.0f, -
 */
 GLfloat cube_tex[][2] = { {0.701030928, 0.130990415},{0.701030928, 0}, {1,0}, {1,0.130990415}, //top
 						{0.701030928, 0}, {1,0}, {1, 0.130990415}, {0.701030928, 0.130990415}, //bottom
-						{ 1, 0.130990415 }, { 1,1 }, {0.850515464 ,1}, {0.850515464, 0.130990415},	//left
-						{0.850515464, 0.130990415}, {0.850515464, 1}, {0.701030928, 1}, {0.701030928, 0.130990415},//right
+						{0.850515464, 0.130990415}, {0.850515464, 1}, {0.701030928, 1}, {0.701030928, 0.130990415},	//left
+						{ 1, 0.130990415 }, { 1,1 }, {0.850515464 ,1}, {0.850515464, 0.130990415},  //right
 						{.350515464,0},{.350515464,1 }, { 0,1 }, { 0, 0 }, //front
 						{0.350515464,0}, {0.701030928, 0}, {0.701030928, 1}, {0.350515464, 1} };//back
 						
-			
-							
-
 
 // Robot nodes
 treenode torso;
 treenode head;
-treenode lower_arm;
-treenode upper_arm;
-treenode lower_leg;
-treenode upper_leg;
+treenode lower_left_arm;
+treenode lower_right_arm;
+treenode upper_left_arm;
+treenode upper_right_arm;
+treenode lower_left_leg;
+treenode lower_right_leg;
+treenode upper_left_leg;
+treenode upper_right_leg;
 treenode box;
 
 // Rotation angles
 GLfloat teapot_theta = 0.0f;
+GLfloat upper_left_arm_theta = 0.0f;
+GLfloat upper_right_arm_theta = 0.0f;
+GLfloat lower_left_arm_theta = 0.0f;
+GLfloat lower_right_arm_theta = 0.0f;
+
+GLfloat upper_left_leg_theta = 0.0f;
+GLfloat upper_right_leg_theta = 0.0f;
+GLfloat lower_left_leg_theta = 0.0f;
+GLfloat lower_right_leg_theta = 0.0f;
 
 // Animation variables
 GLint time = 0;
@@ -116,7 +125,8 @@ GLint lasttime = 0;
 GLint fps = 30;
 GLint spin_teapot = 0;
 GLfloat teapot_rpm = 20.0f;
-GLint alphaBlend = 0;
+GLint animate = 0;
+
 // Camera rotation variables
 
 // Billboard variables
@@ -151,10 +161,14 @@ void draw_upper_leg();
 void draw_box();
 void update_torso();
 void update_head();
-void update_lower_arm();
-void update_upper_arm();
-void update_lower_leg();
-void update_upper_leg();
+void update_lower_left_arm();
+void update_lower_right_arm();
+void update_upper_left_arm();
+void update_upper_right_arm();
+void update_lower_left_leg();
+void update_lower_right_leg();
+void update_upper_left_leg();
+void update_upper_right_leg();
 void update_box();
 int main(int argc, char* argv[])
 {
@@ -283,9 +297,12 @@ void keyfunc(unsigned char key, int x, int y)
 	if (key == 'T' || key == 't')
 	{
 		spin_teapot = !spin_teapot;
-
 	}
 
+	if (key == ' ')
+	{
+		animate = !animate;
+	}
 
 	// Esc to quit
 	if (key == 27)
@@ -311,6 +328,10 @@ void idlefunc()
 			{
 				teapot_theta -= 360.0f;
 			}
+		}
+
+		if (animate) {
+
 		}
 		// Update lasttime (reset timer)
 		lasttime = time;
@@ -482,49 +503,82 @@ void create_scene_graph()
 	head.texture = NO_TEXTURES;
 	head.child = NULL;
 	head.material = brass;
-	head.sibling = &lower_arm;
+	head.sibling = &lower_left_arm;
 	head.shaderProg = lightShaderProg;
 	head.f = draw_head;
 	update_head();
 
 
 	// creating arm nodes
-		// left arm
-		lower_arm.texture = NO_TEXTURES;
-		lower_arm.child = NULL;
-		lower_arm.material = brass;
-		lower_arm.sibling = &upper_arm;
-		lower_arm.shaderProg = lightShaderProg;
-		lower_arm.f = draw_lower_arm;
-		update_lower_arm();
+		// lower arm
 
-		// right arm
-		upper_arm.texture = NO_TEXTURES;
-		upper_arm.child = NULL;
-		upper_arm.material = blue;
-		upper_arm.sibling = &lower_leg;
-		upper_arm.shaderProg = lightShaderProg;
-		upper_arm.f = draw_upper_arm;
-		update_upper_arm();
+		lower_left_arm.texture = NO_TEXTURES;
+		lower_left_arm.child = NULL;
+		lower_left_arm.material = brass;
+		lower_left_arm.sibling = &lower_right_arm;
+		lower_left_arm.shaderProg = lightShaderProg;
+		lower_left_arm.f = draw_lower_arm;
+		update_lower_left_arm();
+
+		lower_right_arm.texture = NO_TEXTURES;
+		lower_right_arm.child = NULL;
+		lower_right_arm.material = brass;
+		lower_right_arm.sibling = &upper_left_arm;
+		lower_right_arm.shaderProg = lightShaderProg;
+		lower_right_arm.f = draw_lower_arm;
+		update_lower_right_arm();
+
+		// upper arm
+		upper_left_arm.texture = NO_TEXTURES;
+		upper_left_arm.child= NULL;
+		upper_left_arm.material = blue;
+		upper_left_arm.sibling = &upper_right_arm;
+		upper_left_arm.shaderProg = lightShaderProg;
+		upper_left_arm.f = draw_upper_arm;
+		update_upper_right_arm();
+
+		upper_right_arm.texture = NO_TEXTURES;
+		upper_right_arm.child = NULL;
+		upper_right_arm.material = blue;
+		upper_right_arm.sibling = &lower_left_leg;
+		upper_right_arm.shaderProg = lightShaderProg;
+		upper_right_arm.f = draw_upper_arm;
+		update_upper_left_arm();
 
 	// creating leg nodes
-		// left leg
-		lower_leg.texture = NO_TEXTURES;
-		lower_leg.child = NULL;
-		lower_leg.material = brass;
-		lower_leg.sibling = &upper_leg;
-		lower_leg.shaderProg = lightShaderProg;
-		lower_leg.f = draw_lower_leg;
-		update_lower_leg();
+		// lower leg
+		lower_left_leg.texture = NO_TEXTURES;
+		lower_left_leg.child = NULL;
+		lower_left_leg.material = brass;
+		lower_left_leg.sibling = &lower_right_leg;
+		lower_left_leg.shaderProg = lightShaderProg;
+		lower_left_leg.f = draw_lower_leg;
+		update_lower_left_leg();
 
-		//right leg
-		upper_leg.texture = NO_TEXTURES;
-		upper_leg.child = NULL;
-		upper_leg.material = blue;
-		upper_leg.sibling = &box;
-		upper_leg.shaderProg = lightShaderProg;
-		upper_leg.f = draw_upper_leg;
-		update_upper_leg();
+		lower_right_leg.texture = NO_TEXTURES;
+		lower_right_leg.child = NULL;
+		lower_right_leg.material = brass;
+		lower_right_leg.sibling = &upper_left_leg;
+		lower_right_leg.shaderProg = lightShaderProg;
+		lower_right_leg.f = draw_lower_leg;
+		update_lower_right_leg();
+
+		// upper leg
+		upper_left_leg.texture = NO_TEXTURES;
+		upper_left_leg.child = NULL;
+		upper_left_leg.material = blue;
+		upper_left_leg.sibling = &upper_right_leg;
+		upper_left_leg.shaderProg = lightShaderProg;
+		upper_left_leg.f = draw_upper_leg;
+		update_upper_left_leg();
+
+		upper_right_leg.texture = NO_TEXTURES;
+		upper_right_leg.child = NULL;
+		upper_right_leg.material = blue;
+		upper_right_leg.sibling = &box;
+		upper_right_leg.shaderProg = lightShaderProg;
+		upper_right_leg.f = draw_upper_leg;
+		update_upper_right_leg();
 
 	// creating box node
 		box.texture = NO_TEXTURES;
@@ -534,8 +588,7 @@ void create_scene_graph()
 		box.shaderProg = lightShaderProg;
 		box.f = draw_box;
 		update_box();
-		
-
+	
 }
 
 // Routine to draw textured cube
@@ -582,18 +635,19 @@ void draw_torso()
 {
 	glUniform1i(texSampler, 0);
 	glPushMatrix();
-	glBindTexture(GL_TEXTURE_2D, tex_ids[SHIRT]);
+		glBindTexture(GL_TEXTURE_2D, tex_ids[SHIRT]);
 	
-	glDisable(GL_BLEND);
-	glTranslatef(0, TORSO_YDIST, 0);
-	glScalef(TORSO_WIDTH, TORSO_HEIGHT, TORSO_DEPTH);
-	texturecube();
+		glDisable(GL_BLEND);
+		glTranslatef(0, TORSO_YDIST, 0);
+		glScalef(TORSO_WIDTH, TORSO_HEIGHT, TORSO_DEPTH);
+		texturecube();
 	glPopMatrix();
 }
 
 // function to draw head
 void draw_head()
 {
+	// head
 	glUniform1i(numLights_param, numLights);
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &head.material);
@@ -602,6 +656,7 @@ void draw_head()
 	glutSolidSphere(HEAD_RADIUS, 50, 50);
 	glPopMatrix();
 
+	// ears
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &blue);
 	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, -HEAD_ZSCALE * 2.5);
@@ -622,7 +677,7 @@ void draw_lower_arm()
 
 	// left lower arm
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &lower_arm.material);
+	set_material(GL_FRONT_AND_BACK, &lower_left_arm.material);
 	glTranslatef(0, TORSO_HEIGHT+(LOWER_ARM_HEIGHT/2.5), -TORSO_WIDTH*2.5);
 	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -637,7 +692,7 @@ void draw_lower_arm()
 
 	// right lower arm
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &lower_arm.material);
+	set_material(GL_FRONT_AND_BACK, &lower_right_arm.material);
 	glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5), TORSO_WIDTH * 2.5);
 	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -659,7 +714,7 @@ void draw_upper_arm()
 
 	// drawing left upper arn (includes shoulder joint)
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &upper_arm.material);
+	set_material(GL_FRONT_AND_BACK, &upper_left_arm.material);
 	glTranslatef(0, TORSO_YDIST + UPPER_ARM_HEIGHT, -TORSO_WIDTH * 2.5);
 	glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -676,7 +731,7 @@ void draw_upper_arm()
 
 	// drawing rightupper arn (includes shoulder joint)
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &upper_arm.material);
+	set_material(GL_FRONT_AND_BACK, &upper_right_arm.material);
 	glTranslatef(0, TORSO_YDIST + UPPER_ARM_HEIGHT , TORSO_WIDTH * 2.5);
 	glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -697,7 +752,7 @@ void draw_lower_leg()
 {
 	// left leg
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &lower_leg.material);
+	set_material(GL_FRONT_AND_BACK, &lower_left_leg.material);
 	glTranslatef(0, (-TORSO_HEIGHT/2)+0.35, -TORSO_WIDTH);
 	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -705,7 +760,7 @@ void draw_lower_leg()
 
 	// right leg
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &lower_leg.material);
+	set_material(GL_FRONT_AND_BACK, &lower_right_leg.material);
 	glTranslatef(0, (-TORSO_HEIGHT/2)+0.35, TORSO_WIDTH);
 	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -717,7 +772,7 @@ void draw_upper_leg()
 {
 	// left leg
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &upper_leg.material);
+	set_material(GL_FRONT_AND_BACK, &upper_left_leg.material);
 	glTranslatef(0, 0.35, -TORSO_WIDTH);
 	glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -725,7 +780,7 @@ void draw_upper_leg()
 
 	// right leg
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &upper_leg.material);
+	set_material(GL_FRONT_AND_BACK, &upper_right_leg.material);
 	glTranslatef(0, 0.35, TORSO_WIDTH);
 	glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
 	glutSolidCube(1.0);
@@ -777,21 +832,51 @@ void update_head()
 
 
 // functions to update limbs
-void update_lower_arm()
+void update_lower_left_arm()
 {
-	glGetFloatv(GL_MODELVIEW_MATRIX, lower_arm.m);
+	glPushMatrix();
+		glLoadIdentity();
+
+		glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_arm.m);
+		glPopMatrix();
 }
-void update_upper_arm() 
+
+void update_lower_right_arm()
 {
-	glGetFloatv(GL_MODELVIEW_MATRIX, upper_arm.m);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_arm.m);
+	glPopMatrix();
 }
-void update_lower_leg() 
+
+void update_upper_left_arm()
 {
-	glGetFloatv(GL_MODELVIEW_MATRIX, lower_leg.m);
+	glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_arm.m);
 }
-void update_upper_leg() 
+
+void update_upper_right_arm() 
 {
-	glGetFloatv(GL_MODELVIEW_MATRIX, upper_leg.m);
+	glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_arm.m);
+}
+void update_lower_left_leg() 
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_leg.m);
+}
+
+void update_lower_right_leg()
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_leg.m);
+}
+
+void update_upper_left_leg() 
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_leg.m);
+}
+
+void update_upper_right_leg()
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_leg.m);
 }
 
 // function to update box
