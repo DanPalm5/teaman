@@ -1,7 +1,7 @@
 // CS370 - Fall 2018
 // Assign04 - Textured Tea Man
 //Daniel Palmieri 12:30-1:45 T/TR
-//Dr. Babcock - To toggle teapot spinning, use T. To toggle animation of robot, use A.
+//Dr. Babcock - To toggle animation of robot, use A.
 
 #ifdef OSX
 	#include <GLUT/glut.h>
@@ -131,6 +131,7 @@ GLint lasttime = 0;
 GLint fps = 30;
 GLint spin_teapot = 0;
 GLfloat rpm = 20.0f;
+GLfloat sps = 20.0f;
 GLint animate = 0;
 GLint shoulder_dir = 1;
 GLint elbow_dir = 1;
@@ -307,7 +308,7 @@ void render_Scene()
 void keyfunc(unsigned char key, int x, int y)
 {
 	// T to spin teapot
-	if (key == 'T' || key == 't')
+	if (key == ' ')
 	{
 		spin_teapot = !spin_teapot;
 	}
@@ -347,19 +348,19 @@ void idlefunc()
 		if (animate) {
 			// move arms and legs
 				// compute shoulder movements
-			right_shoulder_theta+= 5.0f * shoulder_dir * rpm * (time - lasttime) / 1000.0f;
-			left_shoulder_theta -= 5.0f * shoulder_dir *  rpm * (time - lasttime) / 1000.0f;
+			right_shoulder_theta+= 5.0f * shoulder_dir * sps* (time - lasttime) / 1000.0f;
+			left_shoulder_theta -= 5.0f * shoulder_dir *  sps * (time - lasttime) / 1000.0f;
 				// leg movements
-			upper_right_leg_theta += 2.5f * leg_dir * rpm * (time - lasttime) / 1000.0f;
-			upper_left_leg_theta -= 2.5f * leg_dir *rpm* (time - lasttime) / 1000.0f;
+			upper_right_leg_theta += 2.5f * leg_dir * sps * (time - lasttime) / 1000.0f;
+			upper_left_leg_theta -= 2.5f * leg_dir *sps* (time - lasttime) / 1000.0f;
 
-			lower_right_leg_theta -= 1.0f * knee_dir * rpm * (time - lasttime) / 1000.0f;
-			lower_left_leg_theta += 1.0 * knee_dir * rpm * (time - lasttime) / 1000.0f;
+			lower_right_leg_theta -= 1.0f * knee_dir * sps * (time - lasttime) / 1000.0f;
+			lower_left_leg_theta += 1.0 * knee_dir * sps * (time - lasttime) / 1000.0f;
 
 
 				// arm movements
-			lower_right_arm_theta += 1.0f * elbow_dir * rpm * (time - lasttime) / 1000.0f;
-			lower_left_arm_theta -= 1.0f * elbow_dir * rpm * (time - lasttime) / 1000.0f;
+			lower_right_arm_theta += 1.0f * elbow_dir * sps * (time - lasttime) / 1000.0f;
+			lower_left_arm_theta -= 1.0f * elbow_dir * sps * (time - lasttime) / 1000.0f;
 
 
 			if (right_shoulder_theta > 60.0f)
