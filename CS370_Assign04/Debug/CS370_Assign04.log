@@ -10,12 +10,12 @@ E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(24,1): warning 
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_io.h(459): message : see declaration of 'close'
 E:\CS370\assignments\CS370_Assign04\CS370_Assign04\shaderutils.h(43,1): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message : see declaration of 'fopen'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(97,77): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(368,78): warning C4244: '-=': conversion from 'double' to 'GLfloat', possible loss of data
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(780,75): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(852,20): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(941,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(951,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(983,50): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(993,49): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(96,77): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(366,78): warning C4244: '-=': conversion from 'double' to 'GLfloat', possible loss of data
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(778,75): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(850,20): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(939,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(949,61): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(981,50): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+E:\CS370\assignments\CS370_Assign04\CS370_Assign04\TeaMan.cpp(991,49): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
   CS370_Assign04.vcxproj -> E:\CS370\assignments\CS370_Assign04\Debug\CS370_Assign04.exe

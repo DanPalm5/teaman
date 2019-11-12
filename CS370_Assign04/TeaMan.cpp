@@ -308,7 +308,7 @@ void render_Scene()
 	set_PointLight(GL_LIGHT0,&white_light,light_pos);
 
 	// render the scene graph
-	traverse(&head);
+	traverse(&torso);
 
 }
 
@@ -561,7 +561,7 @@ void create_scene_graph()
 {
 	// creating head node
 	head.texture = NO_TEXTURES;
-	head.child = &torso;
+	head.child = NULL;
 	head.material = brass;
 	head.sibling = &box;
 	head.shaderProg = lightShaderProg;
@@ -572,7 +572,7 @@ void create_scene_graph()
 	torso.texture = SHIRT;
 	torso.material = brass;
 	torso.sibling = &left_shoulder;
-	torso.child = &upper_left_leg;
+	torso.child = &head;
 	torso.shaderProg = textureShaderProg;
 	torso.f = draw_torso;
 	update_torso();
@@ -590,7 +590,7 @@ void create_scene_graph()
 	// right shoulder
 	right_shoulder.texture = NO_TEXTURES;
 	right_shoulder.material = red_plastic;
-	right_shoulder.sibling = NULL;
+	right_shoulder.sibling = &upper_right_leg;
 	right_shoulder.child = &upper_right_arm;
 	right_shoulder.shaderProg = lightShaderProg;
 	right_shoulder.f = draw_shoulder;
@@ -640,7 +640,7 @@ void create_scene_graph()
 		upper_left_leg.texture = NO_TEXTURES;
 		upper_left_leg.child = &lower_left_leg;
 		upper_left_leg.material = blue;
-		upper_left_leg.sibling = &upper_right_leg;
+		upper_left_leg.sibling = NULL;
 		upper_left_leg.shaderProg = lightShaderProg;
 		upper_left_leg.f = draw_upper_leg;
 		update_upper_left_leg();
@@ -648,7 +648,7 @@ void create_scene_graph()
 		upper_right_leg.texture = NO_TEXTURES;
 		upper_right_leg.child = &lower_right_leg;
 		upper_right_leg.material = blue;
-		upper_right_leg.sibling = NULL;
+		upper_right_leg.sibling = &upper_left_leg;
 		upper_right_leg.shaderProg = lightShaderProg;
 		upper_right_leg.f = draw_upper_leg;
 		update_upper_right_leg();
