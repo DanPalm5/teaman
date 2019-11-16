@@ -166,6 +166,7 @@ void mousemove(int x, int y);
 void traverse(treenode *node);
 void create_scene_graph();
 void load_image();
+void draw_background();
 bool load_textures();
 void texturecube();
 void texquad(GLfloat v1[], GLfloat v2[], GLfloat v3[], GLfloat v4[], GLfloat t1[], GLfloat t2[], GLfloat t3[], GLfloat t4[]);
@@ -252,6 +253,9 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 
+	// load image
+	load_image();
+
 	// Build scene graph
 	create_scene_graph();
 
@@ -267,7 +271,7 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// draw background image
-	load_image();
+	draw_background();
 
 	// Set projection matrix
 	glMatrixMode(GL_PROJECTION);
@@ -503,7 +507,10 @@ void traverse(treenode *node)
 void load_image()
 {
 	background_image = SOIL_load_image(filename, &width, &height, &channels, SOIL_LOAD_AUTO);
+}
 
+void draw_background() 
+{
 	// Disable blending, and depth test for background image
 	glDisable(GL_BLEND);
 	glDepthMask(GL_FALSE);
@@ -563,7 +570,7 @@ void create_scene_graph()
 	head.texture = NO_TEXTURES;
 	head.child = NULL;
 	head.material = brass;
-	head.sibling = &box;
+	head.sibling = &left_shoulder;
 	head.shaderProg = lightShaderProg;
 	head.f = draw_head;
 	update_head();
@@ -571,7 +578,7 @@ void create_scene_graph()
 	// creating torso node
 	torso.texture = SHIRT;
 	torso.material = brass;
-	torso.sibling = &left_shoulder;
+	torso.sibling = &box;
 	torso.child = &head;
 	torso.shaderProg = textureShaderProg;
 	torso.f = draw_torso;
@@ -749,7 +756,6 @@ void draw_head()
 	glUniform1i(numLights_param, numLights);
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &head.material);
-	glTranslatef(0, HEAD_YDIST+TORSO_YDIST, 0);
 	glScalef(HEAD_XSCALE, HEAD_YSCALE, HEAD_ZSCALE);
 	glutSolidSphere(HEAD_RADIUS, 50, 50);
 	glPopMatrix();
@@ -757,13 +763,13 @@ void draw_head()
 	// ears
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &gray);
-	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, -HEAD_ZSCALE * 2.5);
+	glTranslatef(0, 0, -HEAD_ZSCALE * 2.5);
 	gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
 	glPopMatrix();
 
 	glPushMatrix();
 	set_material(GL_FRONT_AND_BACK, &gray);
-	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, HEAD_ZSCALE * 1.25);
+	glTranslatef(0, 0, HEAD_ZSCALE * 1.25);
 	gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
 	glPopMatrix();
 
@@ -871,6 +877,7 @@ void update_head()
 {
 	glPushMatrix();
 	glLoadIdentity();
+	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, 0);
 	glGetFloatv(GL_MODELVIEW_MATRIX, head.m);
 	glPopMatrix();
 }
