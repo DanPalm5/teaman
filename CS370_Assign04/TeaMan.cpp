@@ -433,6 +433,7 @@ void idlefunc()
 			update_lower_left_arm();
 			update_lower_right_leg();
 			update_lower_left_leg();
+			update_box();
 		
 		}
 		// move it back
@@ -455,6 +456,7 @@ void idlefunc()
 			update_lower_left_arm();
 			update_lower_right_leg();
 			update_lower_left_leg();
+			update_box();
 		}
 		// Update lasttime (reset timer)
 		lasttime = time;
@@ -790,9 +792,7 @@ void draw_torso()
 	glUniform1i(texSampler, 0);
 	glPushMatrix();
 		glBindTexture(GL_TEXTURE_2D, tex_ids[SHIRT]);
-	
 		glDisable(GL_BLEND);
-		glTranslatef(0, TORSO_YDIST, 0);
 		glScalef(TORSO_WIDTH, TORSO_HEIGHT, TORSO_DEPTH);
 		texturecube();
 	glPopMatrix();
@@ -804,22 +804,22 @@ void draw_head()
 	// head
 	glUniform1i(numLights_param, numLights);
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &head.material);
-	glScalef(HEAD_XSCALE, HEAD_YSCALE, HEAD_ZSCALE);
-	glutSolidSphere(HEAD_RADIUS, 50, 50);
+		set_material(GL_FRONT_AND_BACK, &head.material);
+		glScalef(HEAD_XSCALE, HEAD_YSCALE, HEAD_ZSCALE);
+		glutSolidSphere(HEAD_RADIUS, 50, 50);
 	glPopMatrix();
 
 	// ears
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &gray);
-	glTranslatef(0, 0, -HEAD_ZSCALE * 2.5);
-	gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
+		set_material(GL_FRONT_AND_BACK, &gray);
+		glTranslatef(0, 0, -HEAD_ZSCALE * 2.5);
+		gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
 	glPopMatrix();
 
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &gray);
-	glTranslatef(0, 0, HEAD_ZSCALE * 1.25);
-	gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
+		set_material(GL_FRONT_AND_BACK, &gray);
+		glTranslatef(0, 0, HEAD_ZSCALE * 1.25);
+		gluCylinder(quadric, EAR_RADIUS, EAR_RADIUS, EAR_HEIGHT, 50, 50);
 	glPopMatrix();
 
 }
@@ -828,10 +828,9 @@ void draw_head()
 void draw_shoulder()
 {
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &left_shoulder.material);
-	glTranslatef(0, TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1, 0);
-	glScalef(SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE);
-	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
+		set_material(GL_FRONT_AND_BACK, &left_shoulder.material);
+		glScalef(SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE, SHOULDER_JOINT_SCALE);
+		glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
 	glPopMatrix();
 }
 
@@ -841,18 +840,18 @@ void draw_lower_arm()
 {
 	// lower arm
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &lower_left_arm.material);
-	glTranslatef(0, 0, 0);
-	glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
-	glutSolidCube(1.0);
+		set_material(GL_FRONT_AND_BACK, &lower_left_arm.material);
+		glTranslatef(0, 0, 0);
+		glScalef(LOWER_ARM_WIDTH, LOWER_ARM_HEIGHT, LOWER_ARM_DEPTH);
+		glutSolidCube(1.0);
 	glPopMatrix();
 
 	// elbow joint
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &lime);
-	glTranslatef(0, TORSO_HEIGHT/3, 0);
-	glScalef(ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE);
-	glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
+		set_material(GL_FRONT_AND_BACK, &lime);
+		glTranslatef(0, TORSO_HEIGHT/3, 0);
+		glScalef(ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE, ELBOW_JOINT_SCALE);
+		glutSolidSphere(JOINT_RADIUS, JOINT_SLICES, JOINT_STACKS);
 	glPopMatrix();
 }
 
@@ -861,7 +860,6 @@ void draw_upper_arm()
 {
 	glPushMatrix();
 		set_material(GL_FRONT_AND_BACK, &upper_left_arm.material);
-		glTranslatef(0, TORSO_YDIST + UPPER_ARM_HEIGHT, 0);
 		glScalef(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_DEPTH);
 		glutSolidCube(1.0);
 	glPopMatrix();
@@ -899,12 +897,11 @@ void draw_box()
 
 	// transparent box
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &box.material);
-	glDepthMask(GL_FALSE);
-	glTranslatef(TEAPOT_X, TEAPOT_Y, 0.0f);
-	glScalef(1, 0.7, 1);
-	glutSolidCube(BOX_SIZE);
-	glDepthMask(GL_TRUE);
+		set_material(GL_FRONT_AND_BACK, &box.material);
+		glDepthMask(GL_FALSE);
+		glScalef(1, 0.7, 1);
+		glutSolidCube(BOX_SIZE);
+		glDepthMask(GL_TRUE);
 	glPopMatrix();
 
 	// disable blending - we only want the box to be translucent
@@ -915,19 +912,21 @@ void draw_teapot()
 {
 	// teapot inside box
 	glPushMatrix();
-	set_material(GL_FRONT_AND_BACK, &teapot.material);
-	glutSolidTeapot(TEAPOT_SIZE);
+		set_material(GL_FRONT_AND_BACK, &teapot.material);
+		glutSolidTeapot(TEAPOT_SIZE);
 	glPopMatrix();
 }
 
+// END OF DRAWING FUNCTIONS - BEGIN UPDATE FUNCTIONS
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // function to update head movements
 void update_head()
 {
 	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0, HEAD_YDIST + TORSO_YDIST +explode_dist, 0);
-	glGetFloatv(GL_MODELVIEW_MATRIX, head.m);
+		glLoadIdentity();
+		glTranslatef(0, HEAD_YDIST +explode_dist, 0);
+		glGetFloatv(GL_MODELVIEW_MATRIX, head.m);
 	glPopMatrix();
 }
 
@@ -936,19 +935,18 @@ void update_torso()
 {
 	glPushMatrix();
 		glLoadIdentity();
+		glTranslatef(0, TORSO_YDIST, 0);
 		glGetFloatv(GL_MODELVIEW_MATRIX, torso.m);
 	glPopMatrix();
 }
-
 
 // function to update shoulders
 void update_left_shoulder() 
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0,  (TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), -TORSO_WIDTH*2.5 - explode_dist);
+		glTranslatef(0,  TORSO_HEIGHT-1, -TORSO_WIDTH*2.5 - explode_dist);
 		glRotatef(left_shoulder_theta, 0, 0, 1);
-		glTranslatef(0, -(TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), 0);
 		glGetFloatv(GL_MODELVIEW_MATRIX, left_shoulder.m);
 	glPopMatrix();
 }
@@ -958,9 +956,8 @@ void update_right_shoulder()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, (TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), TORSO_WIDTH * 2.5 + explode_dist);
+		glTranslatef(0, TORSO_HEIGHT-1, TORSO_WIDTH * 2.5 + explode_dist);
 		glRotatef(right_shoulder_theta, 0, 0, 1);
-		glTranslatef(0, -(TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), 0);
 		glGetFloatv(GL_MODELVIEW_MATRIX, right_shoulder.m);
 	glPopMatrix();
 }
@@ -971,20 +968,20 @@ void update_right_shoulder()
 void update_upper_left_arm()
 {
 	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0, 0, -explode_dist);
-	glRotatef(upper_left_arm_theta, 0, 0, 1);
-	glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_arm.m);
+		glLoadIdentity();
+		glTranslatef(0, -UPPER_ARM_HEIGHT+1, -explode_dist);
+		glRotatef(upper_left_arm_theta, 0, 0, 1);
+		glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_arm.m);
 	glPopMatrix();
 }
 
 void update_upper_right_arm()
 {
 	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0, 0, explode_dist);
-	glRotatef(upper_right_arm_theta, 0, 0, 1);
-	glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_arm.m);
+		glLoadIdentity();
+		glTranslatef(0, -UPPER_ARM_HEIGHT+1, explode_dist);
+		glRotatef(upper_right_arm_theta, 0, 0, 1);
+		glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_arm.m);
 	glPopMatrix();
 }
 
@@ -992,7 +989,7 @@ void update_lower_left_arm()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5) + explode_dist, 0);
+		glTranslatef(0, -LOWER_ARM_HEIGHT-1 + explode_dist, 0);
 		glRotatef(lower_left_arm_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_arm.m);
 	glPopMatrix();
@@ -1002,7 +999,7 @@ void update_lower_right_arm()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5) + explode_dist, 0);
+		glTranslatef(0, -LOWER_ARM_HEIGHT-1 + explode_dist, 0);
 		glRotatef(lower_right_arm_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_arm.m);
 	glPopMatrix();
@@ -1014,7 +1011,7 @@ void update_upper_left_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0.75, -TORSO_WIDTH - explode_dist);
+		glTranslatef(0, -UPPER_LEG_HEIGHT*1.5, -TORSO_WIDTH - explode_dist);
 		glRotatef(upper_left_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_leg.m);
 	glPopMatrix();
@@ -1024,7 +1021,7 @@ void update_upper_right_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0.75, TORSO_WIDTH + explode_dist);
+		glTranslatef(0, -UPPER_LEG_HEIGHT*1.5 , TORSO_WIDTH + explode_dist);
 		glRotatef(upper_right_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_leg.m);
 	glPopMatrix();
@@ -1055,6 +1052,7 @@ void update_box()
 {
 	glPushMatrix();
 		glLoadIdentity();
+		glTranslatef(TEAPOT_X, TEAPOT_Y+explode_dist, 0.0f);
 		glGetFloatv(GL_MODELVIEW_MATRIX, box.m);
 	glPopMatrix();
 }
@@ -1064,9 +1062,7 @@ void update_teapot()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(TEAPOT_X, TEAPOT_Y, 0.0f);
 		glRotatef(teapot_theta, 0.0f, 1.0f, 0.0f);
 		glGetFloatv(GL_MODELVIEW_MATRIX, teapot.m);
 	glPopMatrix();
-
 }
