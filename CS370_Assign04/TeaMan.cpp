@@ -1,7 +1,8 @@
 // CS370 - Fall 2018
 // Assign04 - Textured Tea Man
 //Daniel Palmieri 12:30-1:45 T/TR
-//Dr. Babcock - To toggle animation of robot, use A.
+//Dr. Babcock - To toggle animation of robot, use A. If you get tired of this robot, try pressing E. (I improved upon my blocks from assignment 2 :) )
+//																						 P.S. - you can press E again to "undo" what you just did. 
 
 #ifdef OSX
 	#include <GLUT/glut.h>
@@ -143,6 +144,9 @@ GLint shoulder_dir = 1;
 GLint elbow_dir = 1;
 GLint leg_dir = 1;
 GLint knee_dir = 1;
+GLint explode = 0;
+GLfloat explode_dist = 0.0f;
+GLint num_robots_created = 0;
 
 // Camera rotation variables
 
@@ -330,6 +334,12 @@ void keyfunc(unsigned char key, int x, int y)
 		animate = !animate;
 	}
 
+	if (key == 'E' || key == 'e') 
+	{
+		explode = !explode;
+		num_robots_created++;
+	}
+
 	// Esc to quit
 	if (key == 27)
 	{
@@ -406,6 +416,45 @@ void idlefunc()
 			update_lower_right_leg();
 			update_lower_left_leg();
 
+		}
+		// exploding if e is pressed
+		if (explode) 
+		{
+			// compute movement (time based)
+			explode_dist += 4.0f * sps * (time - lasttime) / 1000.0f;
+
+
+			update_head();
+			update_right_shoulder();
+			update_left_shoulder();
+			update_upper_right_leg();
+			update_upper_left_leg();
+			update_lower_right_arm();
+			update_lower_left_arm();
+			update_lower_right_leg();
+			update_lower_left_leg();
+		
+		}
+		// move it back
+		if (!explode) 
+		{
+			if (explode_dist > 0.0f)
+			{
+				explode_dist = -explode_dist;
+			}
+			else if (explode_dist <= 0) 
+			{
+				explode_dist = 0;
+			}
+			update_head();
+			update_right_shoulder();
+			update_left_shoulder();
+			update_upper_right_leg();
+			update_upper_left_leg();
+			update_lower_right_arm();
+			update_lower_left_arm();
+			update_lower_right_leg();
+			update_lower_left_leg();
 		}
 		// Update lasttime (reset timer)
 		lasttime = time;
@@ -877,7 +926,7 @@ void update_head()
 {
 	glPushMatrix();
 	glLoadIdentity();
-	glTranslatef(0, HEAD_YDIST + TORSO_YDIST, 0);
+	glTranslatef(0, HEAD_YDIST + TORSO_YDIST +explode_dist, 0);
 	glGetFloatv(GL_MODELVIEW_MATRIX, head.m);
 	glPopMatrix();
 }
@@ -897,7 +946,7 @@ void update_left_shoulder()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0,  (TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), -TORSO_WIDTH*2.5);
+		glTranslatef(0,  (TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), -TORSO_WIDTH*2.5 - explode_dist);
 		glRotatef(left_shoulder_theta, 0, 0, 1);
 		glTranslatef(0, -(TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), 0);
 		glGetFloatv(GL_MODELVIEW_MATRIX, left_shoulder.m);
@@ -909,7 +958,7 @@ void update_right_shoulder()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, (TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), TORSO_WIDTH * 2.5);
+		glTranslatef(0, (TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), TORSO_WIDTH * 2.5 + explode_dist);
 		glRotatef(right_shoulder_theta, 0, 0, 1);
 		glTranslatef(0, -(TORSO_YDIST + UPPER_ARM_HEIGHT + LOWER_ARM_HEIGHT - 1), 0);
 		glGetFloatv(GL_MODELVIEW_MATRIX, right_shoulder.m);
@@ -923,7 +972,7 @@ void update_upper_left_arm()
 {
 	glPushMatrix();
 	glLoadIdentity();
-	glTranslatef(0, 0, 0);
+	glTranslatef(0, 0, -explode_dist);
 	glRotatef(upper_left_arm_theta, 0, 0, 1);
 	glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_arm.m);
 	glPopMatrix();
@@ -933,7 +982,7 @@ void update_upper_right_arm()
 {
 	glPushMatrix();
 	glLoadIdentity();
-	glTranslatef(0, 0, 0);
+	glTranslatef(0, 0, explode_dist);
 	glRotatef(upper_right_arm_theta, 0, 0, 1);
 	glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_arm.m);
 	glPopMatrix();
@@ -943,7 +992,7 @@ void update_lower_left_arm()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5), 0);
+		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5) + explode_dist, 0);
 		glRotatef(lower_left_arm_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_arm.m);
 	glPopMatrix();
@@ -953,7 +1002,7 @@ void update_lower_right_arm()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5), 0);
+		glTranslatef(0, TORSO_HEIGHT + (LOWER_ARM_HEIGHT / 2.5) + explode_dist, 0);
 		glRotatef(lower_right_arm_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_arm.m);
 	glPopMatrix();
@@ -965,7 +1014,7 @@ void update_upper_left_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0.75, -TORSO_WIDTH);
+		glTranslatef(0, 0.75, -TORSO_WIDTH - explode_dist);
 		glRotatef(upper_left_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, upper_left_leg.m);
 	glPopMatrix();
@@ -975,7 +1024,7 @@ void update_upper_right_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, 0.75, TORSO_WIDTH);
+		glTranslatef(0, 0.75, TORSO_WIDTH + explode_dist);
 		glRotatef(upper_right_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, upper_right_leg.m);
 	glPopMatrix();
@@ -985,7 +1034,7 @@ void update_lower_left_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, (-TORSO_HEIGHT / 1.5) + 0.35, 0);
+		glTranslatef(0, (-TORSO_HEIGHT / 1.5) + 0.35, -explode_dist);
 		glRotatef(lower_left_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_left_leg.m);
 	glPopMatrix();
@@ -995,7 +1044,7 @@ void update_lower_right_leg()
 {
 	glPushMatrix();
 		glLoadIdentity();
-		glTranslatef(0, (-TORSO_HEIGHT / 1.5) + 0.35,0);
+		glTranslatef(0, (-TORSO_HEIGHT / 1.5) + 0.35, explode_dist);
 		glRotatef(lower_right_leg_theta, 0, 0, 1);
 		glGetFloatv(GL_MODELVIEW_MATRIX, lower_right_leg.m);
 	glPopMatrix();
