@@ -1057,7 +1057,7 @@ void update_box()
 	glPopMatrix();
 }
 
-
+// update teapot
 void update_teapot()
 {
 	glPushMatrix();
