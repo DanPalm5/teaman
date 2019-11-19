@@ -434,6 +434,7 @@ void idlefunc()
 			update_lower_right_leg();
 			update_lower_left_leg();
 			update_box();
+			update_teapot();
 		
 		}
 		// move it back
@@ -629,7 +630,7 @@ void create_scene_graph()
 	// creating torso node
 	torso.texture = SHIRT;
 	torso.material = brass;
-	torso.sibling = &box;
+	torso.sibling = &teapot;
 	torso.child = &head;
 	torso.shaderProg = textureShaderProg;
 	torso.f = draw_torso;
@@ -731,7 +732,7 @@ void create_scene_graph()
 
 		// creating box node
 		box.texture = NO_TEXTURES;
-		box.child = &teapot;
+		box.child = NULL;
 		box.material = transparent_lime;
 		box.sibling = NULL;
 		box.shaderProg = lightShaderProg;
@@ -739,8 +740,9 @@ void create_scene_graph()
 		update_box();
 	
 		//teapot
+		teapot.sibling = &box;
 		teapot.texture = NO_TEXTURES;
-		teapot.child = teapot.sibling = NULL;
+		teapot.child = NULL;
 		teapot.material = gray;
 		teapot.shaderProg = lightShaderProg;
 		teapot.f = draw_teapot;
@@ -1062,6 +1064,7 @@ void update_teapot()
 {
 	glPushMatrix();
 		glLoadIdentity();
+		glTranslatef(TEAPOT_X, TEAPOT_Y + explode_dist, 0.0f);
 		glRotatef(teapot_theta, 0.0f, 1.0f, 0.0f);
 		glGetFloatv(GL_MODELVIEW_MATRIX, teapot.m);
 	glPopMatrix();
